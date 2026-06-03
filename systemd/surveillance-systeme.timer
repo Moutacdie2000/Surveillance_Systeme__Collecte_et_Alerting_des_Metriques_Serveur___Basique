@@ -1,0 +1,29 @@
+# surveillance-systeme.timer — Déclencheur périodique de l'unité oneshot.
+#
+# Ce timer lance surveillance-systeme.service toutes les 5 minutes (et 1 minute
+# après le démarrage du système). Ajustez OnUnitActiveSec selon vos besoins.
+#
+# Voir surveillance-systeme.service pour la procédure d'installation complète.
+# Commandes utiles :
+#   systemctl enable --now surveillance-systeme.timer   # activer + démarrer
+#   systemctl list-timers   surveillance-systeme.timer   # prochaine échéance
+#   systemctl disable --now surveillance-systeme.timer   # désactiver
+
+[Unit]
+Description=Déclenche la surveillance système toutes les 5 minutes
+Documentation=file:/opt/surveillance-systeme/README.md
+
+[Timer]
+# Première exécution 1 minute après le boot.
+OnBootSec=1min
+# Puis toutes les 5 minutes après la fin de la précédente exécution.
+OnUnitActiveSec=5min
+# Rattrape une exécution manquée (machine éteinte au moment prévu).
+Persistent=true
+# Petite dispersion pour éviter les pics si plusieurs hôtes sont synchronisés.
+RandomizedDelaySec=15
+# Nom logique de l'unité déclenchée (par défaut : même nom que le timer).
+Unit=surveillance-systeme.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,68 @@
+# surveillance-systeme.service — Unité systemd (type oneshot).
+#
+# Cette unité exécute UNE collecte (--once) puis se termine. Elle est destinée
+# à être déclenchée périodiquement par le timer associé
+# (surveillance-systeme.timer), et NON activée directement.
+#
+# INSTALLATION (en root) :
+#   1. Copier le projet, par exemple dans /opt/surveillance-systeme.
+#   2. Adapter les chemins ExecStart / WorkingDirectory ci-dessous si besoin.
+#   3. Copier les deux fichiers d'unité :
+#        cp systemd/surveillance-systeme.service /etc/systemd/system/
+#        cp systemd/surveillance-systeme.timer   /etc/systemd/system/
+#   4. Recharger systemd puis activer le timer :
+#        systemctl daemon-reload
+#        systemctl enable --now surveillance-systeme.timer
+#   5. Vérifier :
+#        systemctl list-timers surveillance-systeme.timer
+#        journalctl -u surveillance-systeme.service -f
+#
+# REMARQUE : le mode --once renvoie le code 2 lorsqu'une alerte est levée.
+# SuccessExitStatus=2 indique à systemd que ce code n'est PAS un échec.
+
+[Unit]
+Description=Surveillance système (CPU/RAM/disque/charge) — collecte unique
+Documentation=file:/opt/surveillance-systeme/README.md
+# On attend que le système de fichiers et le réseau (pour le webhook) soient prêts.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+
+# Adapter ces deux chemins à l'emplacement réel d'installation.
+WorkingDirectory=/opt/surveillance-systeme
+ExecStart=/opt/surveillance-systeme/monitor.sh --once --config /opt/surveillance-systeme/thresholds.conf
+
+# Le code de sortie 2 (alerte levée) ne doit pas être traité comme une erreur.
+SuccessExitStatus=2
+
+# Couleurs inutiles dans le journal systemd.
+Environment=NO_COLOR=1
+
+# --- Durcissement (sécurité) ---------------------------------------------
+# Exécution sous un compte non privilégié dédié. Créez-le au préalable :
+#   useradd --system --no-create-home --shell /usr/sbin/nologin surveillance
+# Puis décommentez les deux lignes suivantes :
+#User=surveillance
+#Group=surveillance
+
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+# Le service doit pouvoir écrire son journal d'alertes. Avec ProtectSystem=strict,
+# /var est en lecture seule : on autorise explicitement le répertoire de logs.
+# Crée et gère /var/log/surveillance-systeme automatiquement.
+LogsDirectory=surveillance-systeme
+ReadWritePaths=/var/log/surveillance-systeme
+
+[Install]
+WantedBy=multi-user.target
