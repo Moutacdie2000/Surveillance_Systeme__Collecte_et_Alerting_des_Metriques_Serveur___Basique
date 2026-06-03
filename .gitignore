@@ -1,0 +1,23 @@
+# .gitignore — surveillance-systeme
+
+# Journaux d'alertes générés à l'exécution.
+*.log
+alerts.log
+metrics.jsonl
+
+# Profils de seuils locaux dérivés (on versionne uniquement thresholds.conf).
+thresholds.local.conf
+*.local.conf
+
+# Fichiers temporaires de l'OS / éditeurs.
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Sauvegardes diverses.
+*.bak
+*.orig
