@@ -1,0 +1,40 @@
+# crontab.example — Exemples de planification via cron pour monitor.sh.
+#
+# Installation :
+#   crontab -e            # éditer le crontab de l'utilisateur courant
+#   crontab crontab.example   # OU remplacer entièrement le crontab par ce fichier
+#
+# Rappels sur le format cron :
+#   ┌───────── minute        (0 - 59)
+#   │ ┌─────── heure          (0 - 23)
+#   │ │ ┌───── jour du mois   (1 - 31)
+#   │ │ │ ┌─── mois           (1 - 12)
+#   │ │ │ │ ┌─ jour de semaine (0 - 7, 0 et 7 = dimanche)
+#   │ │ │ │ │
+#   * * * * *  commande à exécuter
+#
+# IMPORTANT : cron fournit un environnement minimal.
+#   - Utilisez des chemins ABSOLUS vers monitor.sh ET vers thresholds.conf.
+#   - NO_COLOR=1 évite d'écrire des codes couleur ANSI dans les fichiers/mails.
+#   - monitor.sh renvoie le code 2 si une alerte est levée ; cron ignore le code
+#     de sortie mais enverra un mail si la commande écrit sur stderr (les
+#     alertes sont précisément émises sur stderr → utile pour être notifié).
+
+# Variables d'environnement appliquées aux tâches ci-dessous.
+NO_COLOR=1
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# 1) Collecte toutes les 5 minutes (cas d'usage le plus courant).
+#    La sortie standard (tableau) est jetée ; seules les alertes (stderr)
+#    remonteront par mail si MAILTO est configuré.
+*/5 * * * * /opt/surveillance-systeme/monitor.sh --once --config /opt/surveillance-systeme/thresholds.conf >/dev/null
+
+# 2) Variante : archiver la sortie JSON horodatée toutes les 15 minutes.
+#    Pratique pour constituer un historique exploitable a posteriori.
+#*/15 * * * * /opt/surveillance-systeme/monitor.sh --once --json >> /var/log/surveillance-systeme/metrics.jsonl 2>/dev/null
+
+# 3) Variante : un récapitulatif complet chaque jour à 08h00, envoyé par mail.
+#    Définir MAILTO en tête de crontab pour recevoir le rapport.
+#MAILTO=admin@example.com
+#0 8 * * * /opt/surveillance-systeme/monitor.sh --once --no-alert
