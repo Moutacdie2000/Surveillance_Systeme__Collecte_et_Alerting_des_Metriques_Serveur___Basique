@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lib/alerting.sh — Émission d'alertes (journal + webhook optionnel).
+# lib/alerting.sh, Émission d'alertes (journal + webhook optionnel).
 #
 # Stratégie d'alerte volontairement simple et sans dépendance lourde :
 #   - Toute alerte est TOUJOURS journalisée (fichier de log + stderr).
@@ -86,7 +86,7 @@ alert_trigger() {
 
   local payload line
   payload="$(__alert_build_payload "$@")"
-  line="[${severity}] ${metric}=${value} (seuil ${threshold}) — ${message}"
+  line="[${severity}] ${metric}=${value} (seuil ${threshold}), ${message}"
 
   # 1) Journalisation systématique (fichier + stderr coloré).
   if __alert_ensure_logfile; then
@@ -105,7 +105,7 @@ alert_trigger() {
   if __alert_network_enabled; then
     __alert_send_webhook "${payload}"
   else
-    log_note "MODE DÉMO (aucun réseau) — payload qui aurait été envoyé :"
+    log_note "MODE DÉMO (aucun réseau), payload qui aurait été envoyé :"
     printf '%s\n' "${payload}" >&2
   fi
 }

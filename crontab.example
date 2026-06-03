@@ -1,4 +1,4 @@
-# crontab.example — Exemples de planification via cron pour monitor.sh.
+# crontab.example, Exemples de planification via cron pour monitor.sh.
 #
 # Installation :
 #   crontab -e            # éditer le crontab de l'utilisateur courant

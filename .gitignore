@@ -1,4 +1,4 @@
-# .gitignore — surveillance-systeme
+# .gitignore, surveillance-systeme
 
 # Journaux d'alertes générés à l'exécution.
 *.log

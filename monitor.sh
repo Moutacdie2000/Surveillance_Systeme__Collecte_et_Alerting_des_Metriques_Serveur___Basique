@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# monitor.sh — Surveillance système (CPU / RAM / disque / charge) et alertes.
+# monitor.sh, Surveillance système (CPU / RAM / disque / charge) et alertes.
 #
 # Outil de supervision « zéro dépendance lourde » : il collecte les métriques
 # vitales d'un hôte Linux à partir de /proc, df, ps et uptime, les compare à des
@@ -75,7 +75,7 @@ ALERTS_RAISED=0
 # ----------------------------------------------------------------------------
 usage() {
   cat <<'USAGE'
-surveillance-systeme — monitor.sh
+surveillance-systeme, monitor.sh
 
 Surveille CPU, mémoire, disque et charge système, puis déclenche des alertes
 simples au-dessus de seuils configurables.
@@ -419,7 +419,7 @@ render_table() {
     "ratio ${LOAD_WARN_RATIO}/${LOAD_CRIT_RATIO}" \
     "$(colorize_state "${SNAP_LOAD_STATE}")"
 
-  printf '%s  (load 1/5/15 : %s / %s / %s — %s cœurs — ratio %s)%s\n' \
+  printf '%s  (load 1/5/15 : %s / %s / %s, %s cœurs, ratio %s)%s\n' \
     "${LOG_COLOR_DIM}" \
     "${SNAP_LOAD1}" "${SNAP_LOAD5}" "${SNAP_LOAD15}" \
     "${SNAP_CPU_COUNT}" "${SNAP_LOAD_RATIO}" \

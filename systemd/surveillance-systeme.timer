@@ -1,4 +1,4 @@
-# surveillance-systeme.timer — Déclencheur périodique de l'unité oneshot.
+# surveillance-systeme.timer, Déclencheur périodique de l'unité oneshot.
 #
 # Ce timer lance surveillance-systeme.service toutes les 5 minutes (et 1 minute
 # après le démarrage du système). Ajustez OnUnitActiveSec selon vos besoins.

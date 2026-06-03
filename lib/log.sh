@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lib/log.sh — Helpers de journalisation horodatée et colorée.
+# lib/log.sh, Helpers de journalisation horodatée et colorée.
 #
 # Ce fichier est destiné à être « sourcé » par les autres scripts du projet.
 # Il fournit des fonctions de log uniformes (info/avertissement/erreur/debug)

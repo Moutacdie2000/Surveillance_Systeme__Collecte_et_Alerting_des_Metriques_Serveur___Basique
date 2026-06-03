@@ -1,8 +1,8 @@
 # surveillance-systeme
 
 Outil de **supervision système** léger, écrit en Bash, qui surveille en continu
-les ressources vitales d'un hôte Linux — **CPU, mémoire (RAM), disques et charge
-système** — et déclenche des **alertes simples** dès qu'un seuil configurable est
+les ressources vitales d'un hôte Linux, **CPU, mémoire (RAM), disques et charge
+système**, et déclenche des **alertes simples** dès qu'un seuil configurable est
 dépassé.
 
 Conçu sans dépendance lourde : il s'appuie uniquement sur le pseudo-système de
@@ -15,7 +15,7 @@ fichiers `/proc` et sur les commandes Linux standards (`df`, `ps`, `uptime`,
 
 Disposer d'un script unique, facile à auditer et à déployer (cron ou systemd),
 capable de répondre à une question simple : **« mon serveur est-il en bonne
-santé en ce moment ? »** — et de prévenir automatiquement (journal + webhook)
+santé en ce moment ? »**, et de prévenir automatiquement (journal + webhook)
 lorsqu'une ressource sort des clous.
 
 ---
@@ -32,7 +32,7 @@ lorsqu'une ressource sort des clous.
   machine (`--json`) pour l'intégration dans une chaîne d'outils.
 - **Alerting réaliste mais hors-ligne par défaut** : journalisation systématique
   et webhook `curl` optionnel, avec un **MODE DÉMO** qui affiche le payload sans
-  jamais toucher au réseau — parfait pour une démonstration reproductible.
+  jamais toucher au réseau, parfait pour une démonstration reproductible.
 - **Industrialisation** : exemples prêts à l'emploi pour **cron** et pour une
   **unité systemd + timer** durcie.
 
@@ -126,7 +126,7 @@ RESSOURCE  VALEUR       SEUILS (W/C)           ÉTAT
 CPU        12.5%        80/90%                 OK
 RAM        63.8%        80/90%                 OK
 Charge     0.42         ratio 1.0/2.0          OK
-  (load 1/5/15 : 0.42 / 0.55 / 0.60 — 4 cœurs — ratio 0.10)
+  (load 1/5/15 : 0.42 / 0.55 / 0.60, 4 cœurs, ratio 0.10)
 
 MONTAGE                  USAGE    UTILISÉ / TOTAL      ÉTAT
 --------------------------------------------------------------
@@ -275,7 +275,7 @@ journalctl -u surveillance-systeme.service -f
 
 - **CPU** : deux lectures de `/proc/stat` espacées de `--sample` secondes ; le
   pourcentage est `(Δactif / Δtotal) × 100`. Une mesure instantanée est donc
-  impossible (il faut un intervalle) — c'est volontaire et conforme à la façon
+  impossible (il faut un intervalle), c'est volontaire et conforme à la façon
   dont `top` procède.
 - **Mémoire** : `used = MemTotal − MemAvailable` (définition moderne), avec repli
   sur `MemFree + Buffers + Cached` pour les très vieux noyaux.

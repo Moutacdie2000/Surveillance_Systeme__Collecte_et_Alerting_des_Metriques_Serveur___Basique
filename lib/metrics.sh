@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# lib/metrics.sh — Collecte des métriques système via /proc, df, uptime, ps.
+# lib/metrics.sh, Collecte des métriques système via /proc, df, uptime, ps.
 #
 # Ce module ne dépend d'aucun outil externe non standard : il s'appuie
 # uniquement sur le pseudo-système de fichiers /proc et sur les commandes

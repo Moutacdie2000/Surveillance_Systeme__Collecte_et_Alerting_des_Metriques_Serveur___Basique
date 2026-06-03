@@ -1,4 +1,4 @@
-# surveillance-systeme.service — Unité systemd (type oneshot).
+# surveillance-systeme.service, Unité systemd (type oneshot).
 #
 # Cette unité exécute UNE collecte (--once) puis se termine. Elle est destinée
 # à être déclenchée périodiquement par le timer associé
@@ -21,7 +21,7 @@
 # SuccessExitStatus=2 indique à systemd que ce code n'est PAS un échec.
 
 [Unit]
-Description=Surveillance système (CPU/RAM/disque/charge) — collecte unique
+Description=Surveillance système (CPU/RAM/disque/charge), collecte unique
 Documentation=file:/opt/surveillance-systeme/README.md
 # On attend que le système de fichiers et le réseau (pour le webhook) soient prêts.
 After=network-online.target
